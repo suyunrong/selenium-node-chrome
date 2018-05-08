@@ -28,8 +28,9 @@ RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key
   && apt-get -qqy install /tmp/google-chrome-stable_current_amd64.deb \
   && rm /etc/apt/sources.list.d/google-chrome.list \
   && rm -rf /var/lib/apt/lists/* /var/cache/apt/* \
-  && if[${CHROME_VERSION:-google-chrome-stable} = "google-chrome-stable"]; \
+  && if[${CHROME_VERSION:-google-chrome-stable} != "google-chrome-stable"]; \
   then rm -rf /tmp/google-chrome-stable_current_amd64.deb; \
+  else echo "google-chrome-stable_current_amd64.deb Not Found"; fi \
   && echo "Using GoogleChrome version: "$(/usr/bin/google-chrome -version | awk '{ print $3 }')
 
 
