@@ -11,7 +11,7 @@ USER root
 #       google-chrome-beta  (pull latest beta)
 # https://github.com/suyunrong/GoogleChrome/raw/master/$CHROME_VERSION/google-chrome-stable_current_amd64.deb
 #============================================
-ARG CHROME_VERSION="49.0.2623.75"
+ARG CHROME_VERSION="48.0.2564.109"
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
   && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
   && apt-get update -qqy \
@@ -27,9 +27,6 @@ RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key
 # Chrome Launch Script Wrapper
 #=================================
 COPY wrap_chrome_binary /opt/bin/wrap_chrome_binary
-#RUN chmod +x /opt/bin/wrap_chrome_binary \
-#  && sleep 1 \
-#  && /opt/bin/wrap_chrome_binary
 RUN /opt/bin/wrap_chrome_binary
 
 USER seluser
@@ -40,7 +37,7 @@ USER seluser
 # can specify versions by CHROME_DRIVER_VERSION
 # Latest released version will be used by default
 #============================================
-ARG CHROME_DRIVER_VERSION="2.22"
+ARG CHROME_DRIVER_VERSION="2.21"
 RUN CD_VERSION=$(if [ ${CHROME_DRIVER_VERSION:-latest} = "latest" ]; then echo $(wget -qO- https://chromedriver.storage.googleapis.com/LATEST_RELEASE); else echo $CHROME_DRIVER_VERSION; fi) \
   && echo "Using chromedriver version: "$CD_VERSION \
   && wget --no-verbose -O /tmp/chromedriver_linux64.zip https://chromedriver.storage.googleapis.com/$CD_VERSION/chromedriver_linux64.zip \
@@ -53,7 +50,4 @@ RUN CD_VERSION=$(if [ ${CHROME_DRIVER_VERSION:-latest} = "latest" ]; then echo $
 
 # Generating a default config during build time
 COPY generate_config /opt/bin/generate_config
-#RUN sudo chmod 777 /opt/bin/generate_config \
-#  && sleep 1 \
-#  && sudo /opt/bin/generate_config > /opt/selenium/config.json
 RUN /opt/bin/generate_config > /opt/selenium/config.json
