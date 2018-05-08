@@ -34,9 +34,6 @@ RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key
 # Chrome Launch Script Wrapper
 #=================================
 COPY wrap_chrome_binary /opt/bin/wrap_chrome_binary
-#RUN chmod +x /opt/bin/wrap_chrome_binary \
-#  && sleep 1 \
-#  && /opt/bin/wrap_chrome_binary
 RUN /opt/bin/wrap_chrome_binary
 
 USER seluser
@@ -60,7 +57,4 @@ RUN CD_VERSION=$(if [ ${CHROME_DRIVER_VERSION:-latest} = "latest" ]; then echo $
 
 # Generating a default config during build time
 COPY generate_config /opt/bin/generate_config
-#RUN sudo chmod 777 /opt/bin/generate_config \
-#  && sleep 1 \
-#  && sudo /opt/bin/generate_config > /opt/selenium/config.json
 RUN /opt/bin/generate_config > /opt/selenium/config.json
