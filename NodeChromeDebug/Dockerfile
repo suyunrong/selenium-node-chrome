@@ -38,7 +38,7 @@ RUN mkdir -p ~/.vnc \
 # Scripts to run Selenium Node
 #==============================
 COPY entry_point.sh /opt/bin/entry_point.sh
-RUN sudo chmod 777 /opt/bin/entry_point.sh \
-  && sleep 1
+#RUN sudo chmod 777 /opt/bin/entry_point.sh \
+#  && sleep 1
 
 EXPOSE 5900
