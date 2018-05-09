@@ -18,15 +18,15 @@ USER root
 #       google-chrome-beta  (pull latest beta)
 # https://github.com/suyunrong/GoogleChrome/raw/master/$CHROME_VERSION/google-chrome-stable_current_amd64.deb
 #============================================
-ARG CHROME_VERSION="49.0.2623.75"
+ARG CHROME_VERSION="google-chrome-stable"
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
   && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
   && apt-get update -qqy \
-  && wget --no-verbose -O /tmp/google-chrome-stable_current_amd64.deb https://github.com/suyunrong/GoogleChrome/raw/master/$CHROME_VERSION/google-chrome-stable_current_amd64.deb \
-  && apt-get -qqy install /tmp/google-chrome-stable_current_amd64.deb \
+  && if [ $CHROME_VERSION = "google-chrome-stable" ]; then apt-get -qqy install google-chrome-stable; else wget --no-verbose -O /tmp/google-chrome-stable_current_amd64.deb https://github.com/suyunrong/GoogleChrome/raw/master/$CHROME_VERSION/google-chrome-stable_current_amd64.deb; fi \
+  && if [ $CHROME_VERSION !=  "google-chrome-stable" ]; then apt-get -qqy install /tmp/google-chrome-stable_current_amd64.deb; fi \
   && rm /etc/apt/sources.list.d/google-chrome.list \
   && rm -rf /var/lib/apt/lists/* /var/cache/apt/* \
-  && rm -rf /tmp/google-chrome-stable_current_amd64.deb \
+  && if [ $CHROME_VERSION !=  "google-chrome-stable" ]; then rm -rf /tmp/google-chrome-stable_current_amd64.deb; fi \
   && echo "Using GoogleChrome version: "$(/usr/bin/google-chrome -version | awk '{ print $3 }')
 
 
