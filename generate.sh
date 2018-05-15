@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION=3.11.0
+VERSION=3.12.0
 NAMESPACE=selenium
 AUTHORS=suyunrong
 
